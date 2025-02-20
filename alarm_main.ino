@@ -1,7 +1,6 @@
 //---------------------------------------------------------------alarm_main.ino------------------------------------------------------------------------------------------------
 
   //-------------------------FILE-INFO-------------------------------
-
     // main ino file for the setup and loop functions
     // here the main actions of the actual alarm system will be initiated
     // whereas the specific functions using module libraries will be in other header files
@@ -10,7 +9,6 @@
     // functions --> for additional
 
   //-------------------------OPERATIONS-------------------------------
-
     // ENUM CLASS: setup finite state machine
 
     // ------------------SETUP-----------------
@@ -27,22 +25,24 @@
     // print_state --> prints state information in serial
 
   //------------------------IMPORTANT-INFO----------------------------
-
-    // rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); INFO IN RTC_and_LCD.cpp
     // a state for checking voice recognition will be added in soon
-    // default state is so that the device only checks for the SQW pin being high WHEN the alarm is off
+    // idle  state is so that the device only checks for the SQW pin being high WHEN the alarm is off
     // so that there arent multiple alarms going off at once which can affect the system turning off the buzzer
 
 #include "RTC_and_LCD.h"
 #include "functions.h"
 #include "pins.h"
 
+#if defined(ESP8266) || !defined(ESP32) // if the board is ESP8266 or ESP32
+#include "esp_connection.h" // then include this
+#endif  // defined(ARDUINO) && !defined(ARDUINO_ARDUINO_NANO33BLE)
+
 //---------------------------------FINITE-STATE-MACHINE-ENUM---------------------------------------
 // this enum is for the states which the alarm will have
 enum class AlarmState : uint8_t {
-  Default,       // input alarm    --> inputting alarm fired     ---> state = AlarmOff
+  Idle,       // input alarm    --> inputting alarm fired     ---> state = AlarmOff
   AlarmOn,       // beeps buzzer   --> inputting button pressed  ---> state = AlarmOn
-  AlarmOff       // silence buzzer --> deletes alarm             ---> state = DEFAULT
+  AlarmOff       // silence buzzer --> deletes alarm             ---> state = Idle
 }; 
 
 //---------------------------------------------------------------------SETUP----------------------------------------------------------------------------------------------
@@ -70,16 +70,14 @@ void setup() {
 
 //---------------------------------------------------------------------ALARM-LOOP----------------------------------------------------------------------------------------------
 
-static auto current_state = AlarmState::Default;    // current state
+static auto current_state = AlarmState::Idle;    // current state
 static auto previous_state = AlarmState::AlarmOff;  // previous state
 
 void loop() {
   display_time(); // display the time onto LCD screen (RTC_and_LCD.cpp/h)
-  //print_SQW();
-  //--------------------------------------FINITE-STATE-MACHINE----------------------------------------------
+  //print_SQW();  // checks SQW pin if you need to debug, uncomment to use
 
-  // function to check and print the state changes
-  // check_and_print_current_state(current_state, previous_state, first_state);
+  //--------------------------------------FINITE-STATE-MACHINE----------------------------------------------
 
   if (current_state != previous_state) {
     print_state(current_state);
@@ -87,8 +85,8 @@ void loop() {
   }
 
   switch (current_state) {
-    //-------------------------DEFAULT-------------------------------
-  case AlarmState::Default:
+    //-------------------------Idle-------------------------------
+  case AlarmState::Idle:
     // checking if alarm is fired --> DS3231 SQW pin == LOW
     if (digitalRead(PINS::RTC_SQW) == LOW) {
       current_state = AlarmState::AlarmOn;
@@ -109,12 +107,12 @@ void loop() {
   case AlarmState::AlarmOff:
     clear_alarm(Alarm::A1);
     silence();
-    current_state = AlarmState::Default;
+    current_state = AlarmState::Idle;
     break;
 
     //-------------------------DEFAULT-CASE---------------------------
   default:
-    current_state = AlarmState::Default; // Reset to default state to avoid instability
+    current_state = AlarmState::Idle; // Reset to Idle state to avoid instability
   }
 }
 
@@ -123,9 +121,9 @@ void loop() {
 // this prints the current state
 void print_state(AlarmState state) { //  <---  no need to use & as this is a "read-only" state
   switch (state) {                   //        plus, enum is lightweight so copying it has little damage to performance
-  case AlarmState::Default:
+  case AlarmState::Idle:
     Serial.println();
-    Serial.println("STATE --> DEFAULT");
+    Serial.println("STATE --> IDLE");
     break;
 
   case AlarmState::AlarmOn:
