@@ -5,7 +5,7 @@ Status: Ongoing
 > ML Voice Recognition Model is made by @abbie_bola
 
 ## Board Prototype Photos
-The prototype uses an Arduino nano board since other ones are not available on Wowki.com all nano boards have the similar pinouts anyways. All jumpwires are pinned in the same place and SDA/SDL are in A4/A5 respectively - the [Nano ESP32](https://docs.arduino.cc/resources/pinouts/ABX00083-full-pinout.pdf) and [Nano 33 BLE Sense Rev2]([https://docs.arduino.cc/resources/pinouts/ABX00083-full-pinout.pdf](https://docs.arduino.cc/resources/pinouts/ABX00031-full-pinout.pdf) for reference. There is no mic module in wowki.com unfortunately so was not able to show that - photos will be added soon! 
+The prototype uses an Arduino nano board since other ones are not available on Wowki.com all nano boards have the similar pinouts anyways. All jumpwires are pinned in the same place and SDA/SDL are in A4/A5 respectively - the [Nano ESP32](https://docs.arduino.cc/resources/pinouts/ABX00083-full-pinout.pdf) and [Nano 33 BLE Sense Rev2](https://docs.arduino.cc/resources/pinouts/ABX00083-full-pinout.pdf](https://docs.arduino.cc/resources/pinouts/ABX00031-full-pinout.pdf) for reference. There is no mic module in wowki.com unfortunately so was not able to show that - photos will be added soon! 
 
 ### Alarm Clock Board
 ![alarm_clock_pinout](https://github.com/user-attachments/assets/84e0cc8f-e5a3-41ba-81e9-2eeefc2f4cef)
