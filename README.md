@@ -31,4 +31,4 @@ Project documentation includes a time log, Git Branch Tracker,
 - FSM details + Alarm System
 - How to use DS3231
 - How to setup ESP wireless communication
-- ML + ESP 
+- TensorFlow Lite Micro Integration Info 
