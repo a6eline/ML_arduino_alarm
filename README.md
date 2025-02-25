@@ -1,5 +1,5 @@
 # Alarm Clock with ML Voice Recognition
-An alarm clock which has to be turned off remotely elsewhere using esp_now one way communication to split system into 2 devices. The purpose of this is to ensure that users get out of bed to turn it off instead of snoozing and going back to bed. This can take in ESP and Arduino BLE boards. 
+An alarm clock which has to be turned off remotely elsewhere using wireless communication to split system into 2 devices. The purpose of this is to avoid excessive snoozing by encouraging users to get out of bed and go to the place where they start their morning routine. This can be used for ESP boards (without voice recognition) and boards which use the MP34DT06JTR microphone (such as Nano 33 BLE sense Rev2 or the Nano RP2040).  
 
 Status: Ongoing 
 > ML Voice Recognition Model is made by @abbie_bola
